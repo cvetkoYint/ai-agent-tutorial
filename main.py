@@ -14,11 +14,11 @@ load_dotenv()
 zai_api_key = SecretStr(os.getenv("ZAI_API_KEY", ""))
 
 
-class ResearchResponse(BaseModel):
-    topic: str
-    summary: str
-    sources: list[str]
-    tools_used: list[str]
+# class ResearchResponse(BaseModel):
+#     topic: str
+#     summary: str
+#     sources: list[str]
+#     tools_used: list[str]
 
 
 # llm = ZaiClient(
@@ -33,18 +33,18 @@ llm = ChatOpenAI(
 )
 
 # Parse it into ResearchResponse object so that we can use it as Python object and work with it.
-parser = PydanticOutputParser(pydantic_object=ResearchResponse)
+# parser = PydanticOutputParser(pydantic_object=ResearchResponse)
 
 system_prompt = "You are a research assistant that will help generate a research paper. Answer the user query and use neccessary tools. Wrap the output in this format and provide no other text"
 
 # This should be an instruction for a model how to return message but it doesn't want to work. Investigate/Ask colleagues.
-promptTemplate = ChatPromptTemplate.from_messages(
-    [
-        ("system", "You are a helpful assistant"),
-        ("human", "{input}"),
-        MessagesPlaceholder(variable_name="agent_scratchpad"),
-    ]
-)
+# promptTemplate = ChatPromptTemplate.from_messages(
+#     [
+#         ("system", "You are a helpful assistant"),
+#         ("human", "{input}"),
+#         MessagesPlaceholder(variable_name="agent_scratchpad"),
+#     ]
+# )
 
 agent = create_agent(
     model=llm,
@@ -53,11 +53,7 @@ agent = create_agent(
 )
 
 response = agent.invoke(
-    {
-        "messages": [
-            {"role": "human", "content": "Hey, hows the weather today in Nis Serbia?"}
-        ]
-    }
+    {"messages": [{"role": "human", "content": "Who's bakaprase?"}]}
 )
 
 print(response)
