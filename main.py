@@ -9,6 +9,7 @@ from langchain_core.output_parsers import PydanticOutputParser
 from langchain.agents import create_agent
 from langgraph.prebuilt import create_react_agent
 from pydantic import SecretStr
+from tools import search_web
 
 load_dotenv()
 zai_api_key = SecretStr(os.getenv("ZAI_API_KEY", ""))
@@ -40,15 +41,20 @@ promptTemplate = ChatPromptTemplate.from_messages(
     ]
 )
 
+tools = [search_web]
 agent = create_agent(
     model=llm,
     system_prompt=system_prompt,
     response_format=ResearchResponse,
-    tools=[],
+    tools=tools,
 )
+
+# query = input("What can I help you research?")
 
 response = agent.invoke(
-    {"messages": [{"role": "human", "content": "Who's bakaprase?"}]}
+    {"messages": [{"role": "human", "content": "Who's Novak Djokovic?"}]}
 )
+# response = agent.invoke({"input": query})
 
-print("Response starting here:", response["structured_response"])
+
+print(response["structured_response"])

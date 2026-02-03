@@ -6,3 +6,4 @@ zai-sdk
 python-dotenv
 pydantic
 duckduckgo-search
+ddgs
